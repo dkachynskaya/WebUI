@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
+const baseUrl = 'http://localhost:5000'
+//const baseUrl = 'https://jsonplaceholder.typicode.com'
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      post:null
+    }
+  }
+
+  componentDidMount(){
+    //axios.get(`${baseUrl}/posts/1`).then((res)=>{
+      axios.get(`${baseUrl}/api/post/1`).then((res)=>{
+      this.setState({
+        post:res.data
+      });
+    }).catch((error)=>{
+      alert("There is an error in API call");
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      this.state.post!=null &&
+      <div>
+        <h2>{this.state.post.title}</h2>
+        <p>{this.state.post.content}</p>
       </div>
     );
   }
